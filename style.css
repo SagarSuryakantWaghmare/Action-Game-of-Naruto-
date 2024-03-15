@@ -1,0 +1,108 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+body{
+    background-color:black;
+    overflow: hidden;
+}
+.maincontainer{
+   background-image: url(Assets/Leaf\ Village-Night.jpg);
+   background-repeat: no-repeat;
+   backdrop-filter: blur(1);
+   height: 100vh;
+   width: 100%;
+   background-size: 100vw 100vh;
+   object-fit: cover;
+   
+}
+.naruto{
+    background-image: url(Assets/Naruto\ 2.png);
+    background-repeat: no-repeat;
+    width: 180px;
+    height: 220px;
+    background-size: contain;
+    position: absolute;
+    bottom: 0;
+    left: 45px;
+
+}
+.shika {
+    background-image: url(Assets/Shikamaru.png);
+    background-repeat: no-repeat;
+    width: 163px;
+    height: 222px;
+    background-size: contain;
+    position: absolute;
+    bottom: 0;
+    left: 48vw;
+}
+.JumpNaruto{
+    animation:naruto 0.6s linear ;
+}
+.shikaMove{
+    animation: shikaMove 4s linear infinite ;
+}
+@keyframes naruto{
+    0%{
+        bottom: 0;
+    }
+    50%{
+        bottom: 450px;
+    }
+    100%{
+        bottom: 0;
+
+    }
+}
+
+@keyframes shikaMove {
+    0%{
+        left: 100vw;
+    }
+    100%{
+        left:-10vw ;
+    }
+}
+.gameOver{
+    position: absolute;
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    background-color: #ff9d00ef;
+    width: 20vw;
+    margin: auto;
+    border-radius: 15px;
+    color:white;
+    left: 40vw;
+    top: 10vh;
+}
+.NvsS{
+    position: absolute;
+    padding: 10px;
+    left: 100px;
+    top: 2vh;
+    font-size: 28px;
+    width: 280px;
+    background-color: rgb(112, 24, 252);
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+#scoreCount{
+    position: absolute;
+    padding: 10px;
+    right: 100px;
+    top: 2vh;
+    font-size: 28px;
+    width: 200px;
+    background-color: rgb(112, 24, 252);
+    border-radius: 20px;
+    align-items: center;
+    color: white;
+
+}
