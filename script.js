@@ -6,48 +6,50 @@ let audio, audioover;
 let gameOverFlag = false;
 let updateScoreFlag = true; // Flag to control updating score
 
-// Function to play game audio
-function playGameAudio() {
-    if (audio.readyState >= 2) { // Ensure audio is loaded before playing
-        audio.play();
-    } else {
-        setTimeout(playGameAudio, 100); // Retry after 100ms if audio is not ready
-    }
-}
-
 // Function to update score display
 function updateScore(score) {
+    const scoreCount = document.getElementById('scoreCount');
     scoreCount.innerHTML = "Naruto Score: " + score;
+}
+
+// Function to play game audio
+function playGameAudio() {
+    audio.play();
+}
+
+// Function to handle keydown events
+function handleKeyDown(e) {
+    console.log('key code is:', e.keyCode);
+    const naruto = document.querySelector('.naruto');
+    let narutoX;
+
+    switch (e.keyCode) {
+        case 38: // Up arrow key for jump
+            naruto.classList.add('JumpNaruto');
+            setTimeout(() => {
+                naruto.classList.remove('JumpNaruto');
+            }, 700);
+            break;
+        case 39: // Right arrow key for moving right
+            narutoX = parseInt(window.getComputedStyle(naruto, null).getPropertyValue('left'));
+            naruto.style.left = narutoX + 120 + "px";
+            break;
+        case 37: // Left arrow key for moving left
+            narutoX = parseInt(window.getComputedStyle(naruto, null).getPropertyValue('left'));
+            naruto.style.left = narutoX - 120 + "px";
+            break;
+    }
 }
 
 // Event listener for DOMContentLoaded to start playing audio
 document.addEventListener('DOMContentLoaded', () => {
-    audio = new Audio('Assets/Naruto -Main Theme.m4a');
-    audioover = new Audio('Assets/gameOver.mp3');
-
+    const audio = new Audio('Assets/Naruto -Main Theme.m4a');
+    const audioover = new Audio('Assets/gameOver.mp3');
     playGameAudio();
 });
 
 // Event listener for keydown events to handle player controls
-document.onkeydown = function (e) {
-    console.log('key code is:', e.keyCode);
-    const naruto = document.querySelector('.naruto');
-    let narutoX;
-    if (e.keyCode == 38) { // Up arrow key for jump
-        naruto.classList.add('JumpNaruto');
-        setTimeout(() => {
-            naruto.classList.remove('JumpNaruto');
-        }, 700);
-    }
-    if (e.keyCode == 39) { // Right arrow key for moving right
-        narutoX = parseInt(window.getComputedStyle(naruto, null).getPropertyValue('left'));
-        naruto.style.left = narutoX + 120 + "px";
-    }
-    if (e.keyCode == 37) { // Left arrow key for moving left
-        narutoX = parseInt(window.getComputedStyle(naruto, null).getPropertyValue('left'));
-        naruto.style.left = narutoX - 120 + "px";
-    }
-}
+document.addEventListener('keydown', handleKeyDown);
 
 // Main game loop
 setInterval(() => {

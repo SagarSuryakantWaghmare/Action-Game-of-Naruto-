@@ -104,5 +104,12 @@ body{
     border-radius: 20px;
     align-items: center;
     color: white;
+}
 
+@media (max-width: 600px) {
+    #scoreCount {
+        right: 20px;
+        font-size: 20px;
+        width: 150px;
+    }
 }
