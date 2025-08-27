@@ -4,6 +4,16 @@
 
 Experience the ultimate ninja adventure as Naruto dashes through obstacles in this modern, feature-rich game inspired by the classic endless runner genre, but with exciting Naruto-themed gameplay mechanics!
 
+## 📸 Screenshots
+
+### Gameplay
+![Gameplay Screenshot](screenshots/GamePlay.png)
+*Experience intense ninja action as Naruto runs through the Hidden Leaf Village*
+
+### How to Play
+![How to Play Screenshot](screenshots/HowToPlay.png)
+*Learn the controls and master your ninja skills*
+
 ## 🎮 Game Features
 
 ### Modern Gameplay

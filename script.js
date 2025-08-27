@@ -39,6 +39,10 @@ class NarutoGame {
         this.invincible = false;
         this.shadowCloneActive = false;
         
+        // Auto score system
+        this.autoScoreTimer = null;
+        this.lastScoreTime = 0;
+        
         this.init();
     }
     
@@ -162,6 +166,12 @@ class NarutoGame {
         this.collectibles = [];
         this.invincible = false;
         this.shadowCloneActive = false;
+        this.lastScoreTime = Date.now();
+        
+        // Clear any existing auto score timer
+        if (this.autoScoreTimer) {
+            clearInterval(this.autoScoreTimer);
+        }
         
         // Hide menus and show game
         this.elements.mainMenu.style.display = 'none';
@@ -173,6 +183,7 @@ class NarutoGame {
         this.resetCharacters();
         this.updateHUD();
         this.playBackgroundMusic();
+        this.startAutoScore();
         this.startGameLoop();
     }
     
@@ -191,6 +202,11 @@ class NarutoGame {
         this.gameRunning = false;
         this.elements.pauseScreen.style.display = 'flex';
         this.pauseBackgroundMusic();
+        
+        // Pause auto score timer
+        if (this.autoScoreTimer) {
+            clearInterval(this.autoScoreTimer);
+        }
     }
     
     resumeGame() {
@@ -199,11 +215,20 @@ class NarutoGame {
         this.gameRunning = true;
         this.elements.pauseScreen.style.display = 'none';
         this.playBackgroundMusic();
+        
+        // Resume auto score timer
+        this.startAutoScore();
     }
     
     gameOver() {
         this.gameState = 'gameOver';
         this.gameRunning = false;
+        
+        // Clear auto score timer
+        if (this.autoScoreTimer) {
+            clearInterval(this.autoScoreTimer);
+            this.autoScoreTimer = null;
+        }
         
         // Stop animations
         this.elements.shika.classList.remove('shikaMove');
@@ -339,6 +364,16 @@ class NarutoGame {
         gameLoop();
     }
     
+    startAutoScore() {
+        // Add 1 point every 2 seconds
+        this.autoScoreTimer = setInterval(() => {
+            if (this.gameRunning) {
+                this.score += 1;
+                this.updateHUD();
+            }
+        }, 2000);
+    }
+    
     updateGame() {
         // Update chakra regeneration
         if (this.chakra < 100) {
@@ -359,14 +394,33 @@ class NarutoGame {
         
         // Check collision with Shikamaru
         if (this.isColliding(narutoRect, shikaRect) && !this.invincible) {
-            this.takeDamage();
-            return;
+            // Check if Naruto is jumping on Shikamaru (landing on top)
+            const isJumpingOn = naruto.classList.contains('JumpNaruto') && 
+                               narutoRect.bottom <= shikaRect.top + 30 && // Naruto is above Shikamaru
+                               narutoRect.right > shikaRect.left + 20 && 
+                               narutoRect.left < shikaRect.right - 20;
+            
+            if (isJumpingOn) {
+                // Successfully jumped on Shikamaru
+                this.score += 1;
+                this.updateHUD();
+                this.createParticles(shika, '#00ff00'); // Green particles for successful jump
+                this.showPowerup('+1 Jump Bonus!', 1000);
+                this.playSound('collect');
+                this.respawnEnemy();
+                return;
+            } else {
+                // Regular collision - take damage
+                this.takeDamage();
+                return;
+            }
         }
         
         // Check if Naruto successfully avoided Shikamaru
         const shikaLeft = parseInt(getComputedStyle(shika).left);
         if (shikaLeft < -200 && shika.classList.contains('shikaMove')) {
             this.score += 10;
+            this.updateHUD(); // Force HUD update when score changes
             this.respawnEnemy();
         }
     }
@@ -445,6 +499,7 @@ class NarutoGame {
             if (this.isColliding(orbRect, narutoRect)) {
                 this.chakra = Math.min(100, this.chakra + 20);
                 this.score += 5;
+                this.updateHUD(); // Force HUD update when score changes
                 this.createParticles(orb, '#3498db');
                 this.playSound('collect');
                 orb.remove();
@@ -458,7 +513,8 @@ class NarutoGame {
     }
     
     increaseDifficulty() {
-        const newLevel = Math.floor(this.score / 100) + 1;
+        // Calculate level based on score: level 1 at 10 points, level 2 at 20 points, etc.
+        const newLevel = Math.floor(this.score / 10) + 1;
         if (newLevel > this.level) {
             this.level = newLevel;
             this.showPowerup(`Level ${this.level}!`, 2000);

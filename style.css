@@ -290,15 +290,15 @@ body {
         transform: rotate(0deg) scale(1);
     }
     25% { 
-        bottom: 200px; 
+    bottom: 300px; 
         transform: rotate(-5deg) scale(1.1);
     }
     50% { 
-        bottom: 350px; 
+    bottom: 500px; 
         transform: rotate(0deg) scale(1.05);
     }
     75% { 
-        bottom: 200px; 
+    bottom: 300px; 
         transform: rotate(5deg) scale(1.1);
     }
     100% { 
