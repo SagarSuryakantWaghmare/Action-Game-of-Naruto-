@@ -3,17 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naruto Action Game </title>
+    <title>Naruto: Shadow Clone Adventure</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="Assets/favicon.png">
 </head>
 <body>
-    <div class="maincontainer">
-        <span class="NvsS">Naruto Vs Shikamaru</span>
-        <span class="gameOver">Game Over</span>
-        <div class="naruto"></div>
-        <div id="scoreCount">Your Score:0</div>
-        <div class="shika shikaMove"></div>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <h2>Loading Ninja World...</h2>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
     </div>
+
+    <!-- Main Menu -->
+    <div id="mainMenu" class="main-menu">
+        <div class="menu-container">
+            <h1 class="game-title">NARUTO</h1>
+            <h2 class="game-subtitle">Shadow Clone Adventure</h2>
+            <div class="menu-buttons">
+                <button id="startBtn" class="menu-btn primary">Start Game</button>
+                <button id="instructionsBtn" class="menu-btn">Instructions</button>
+                <button id="settingsBtn" class="menu-btn">Settings</button>
+                <button id="leaderboardBtn" class="menu-btn">High Scores</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructions Modal -->
+    <div id="instructionsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>How to Play</h3>
+            <div class="instructions">
+                <p><span class="key">↑</span> or <span class="key">SPACE</span> - Jump over obstacles</p>
+                <p><span class="key">↓</span> - Slide under high obstacles</p>
+                <p><span class="key">→</span> - Move right</p>
+                <p><span class="key">←</span> - Move left</p>
+                <p><span class="key">S</span> - Use Shadow Clone Jutsu</p>
+                <p><strong>Objective:</strong> Avoid Shikamaru and other obstacles while collecting chakra orbs!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Game Settings</h3>
+            <div class="settings">
+                <div class="setting-item">
+                    <label>Sound Effects:</label>
+                    <input type="range" id="sfxVolume" min="0" max="100" value="70">
+                    <span id="sfxValue">70%</span>
+                </div>
+                <div class="setting-item">
+                    <label>Music Volume:</label>
+                    <input type="range" id="musicVolume" min="0" max="100" value="50">
+                    <span id="musicValue">50%</span>
+                </div>
+                <div class="setting-item">
+                    <label>Difficulty:</label>
+                    <select id="difficulty">
+                        <option value="easy">Genin (Easy)</option>
+                        <option value="normal" selected>Chunin (Normal)</option>
+                        <option value="hard">Jonin (Hard)</option>
+                        <option value="extreme">Hokage (Extreme)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboardModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>High Scores</h3>
+            <div id="leaderboardList" class="leaderboard">
+                <!-- Scores will be populated by JavaScript -->
+            </div>
+            <button id="clearScores" class="menu-btn danger">Clear Scores</button>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div id="gameContainer" class="game-container" style="display: none;">
+        <div class="maincontainer">
+            <!-- HUD -->
+            <div class="hud">
+                <div class="hud-left">
+                    <div id="scoreCount" class="score">Score: 0</div>
+                    <div id="highScore" class="high-score">Best: 0</div>
+                    <div id="level" class="level">Level: 1</div>
+                </div>
+                <div class="hud-right">
+                    <div id="chakra" class="chakra-bar">
+                        <div class="chakra-fill"></div>
+                        <span>Chakra</span>
+                    </div>
+                    <div id="lives" class="lives">❤️ 3</div>
+                    <button id="pauseBtn" class="pause-btn">⏸️</button>
+                </div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="gameOverScreen" class="game-over-screen">
+                <div class="game-over-content">
+                    <h2>Game Over!</h2>
+                    <div id="finalScore" class="final-score">Final Score: 0</div>
+                    <div id="newRecord" class="new-record" style="display: none;">🎉 New High Score! 🎉</div>
+                    <div class="game-over-buttons">
+                        <button id="playAgainBtn" class="menu-btn primary">Play Again</button>
+                        <button id="mainMenuBtn" class="menu-btn">Main Menu</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pause Screen -->
+            <div id="pauseScreen" class="pause-screen">
+                <div class="pause-content">
+                    <h2>Game Paused</h2>
+                    <div class="pause-buttons">
+                        <button id="resumeBtn" class="menu-btn primary">Resume</button>
+                        <button id="pauseMenuBtn" class="menu-btn">Main Menu</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Power-ups Display -->
+            <div id="powerupDisplay" class="powerup-display"></div>
+
+            <!-- Game Characters and Objects -->
+            <div class="naruto" id="naruto"></div>
+            <div class="shika shikaMove" id="shika"></div>
+            <div id="obstacles"></div>
+            <div id="collectibles"></div>
+            <div id="particles"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
