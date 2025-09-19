@@ -60,6 +60,7 @@ class NarutoGame {
             loadingScreen: document.getElementById('loadingScreen'),
             mainMenu: document.getElementById('mainMenu'),
             gameContainer: document.getElementById('gameContainer'),
+            desktopOnlyModal: document.getElementById('desktopOnlyModal'),
             naruto: document.getElementById('naruto'),
             shika: document.getElementById('shika'),
             scoreCount: document.getElementById('scoreCount'),
@@ -123,6 +124,11 @@ class NarutoGame {
             this.updateLeaderboard();
         });
         
+        // Desktop modal controls
+        document.getElementById('continueAnyway')?.addEventListener('click', () => this.closeDesktopModal());
+        document.getElementById('understood')?.addEventListener('click', () => this.closeDesktopModal());
+        document.querySelector('.desktop-modal-close')?.addEventListener('click', () => this.closeDesktopModal());
+        
         // Keyboard controls
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
         document.addEventListener('keyup', this.handleKeyUp.bind(this));
@@ -136,8 +142,18 @@ class NarutoGame {
     showLoadingScreen() {
         setTimeout(() => {
             this.elements.loadingScreen.style.display = 'none';
-            this.showMainMenu();
+            this.showDesktopModal();
         }, 3000);
+    }
+    
+    showDesktopModal() {
+        // Show desktop-only modal after loading
+        this.elements.desktopOnlyModal.style.display = 'block';
+    }
+    
+    closeDesktopModal() {
+        this.elements.desktopOnlyModal.style.display = 'none';
+        this.showMainMenu();
     }
     
     showMainMenu() {

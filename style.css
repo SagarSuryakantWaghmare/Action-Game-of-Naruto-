@@ -434,6 +434,44 @@ body {
     color: var(--text-color);
 }
 
+/* Desktop Only Modal */
+.desktop-notice {
+    text-align: center;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+.desktop-notice p {
+    margin: 8px 0;
+}
+
+.desktop-notice em {
+    color: var(--warning-color);
+}
+
+.desktop-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.desktop-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+    transition: all 0.3s ease;
+}
+
+.desktop-modal-close:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
 /* Game Over Screen */
 .game-over-screen {
     position: absolute;
